@@ -20,9 +20,16 @@ public class Bootstrap implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Flux.just("A", "B", "C")
-                .map(name -> Project.builder().name(name).build())
-                .flatMap(project -> projectRepository.save(project))
-                .subscribe(project -> System.out.println(project));
+        Flux<Project> projects = Flux.just(
+                Project.builder().name("A").build(),
+                Project.builder().name("B").build(),
+                Project.builder().name("C").build(),
+                Project.builder().name("D").build(),
+                Project.builder().name("E").build()
+        );
+
+        projectRepository.deleteAll()
+                .thenMany(projectRepository.saveAll(projects))
+                .blockLast();
     }
 }
