@@ -1,7 +1,7 @@
 package de.denizugurlu.stacirest.bootstrap;
 
 import de.denizugurlu.stacirest.domain.Project;
-import de.denizugurlu.stacirest.annotated.repositories.ProjectRepository;
+import de.denizugurlu.stacirest.repositories.ProjectRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +19,7 @@ public class Bootstrap implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         Flux<Project> projects = Flux.just(
                 Project.builder().name("A").build(),
                 Project.builder().name("B").build(),
