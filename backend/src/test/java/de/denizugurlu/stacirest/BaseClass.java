@@ -2,7 +2,7 @@ package de.denizugurlu.stacirest;
 
 import de.denizugurlu.stacirest.domain.Project;
 import de.denizugurlu.stacirest.repositories.ProjectRepository;
-import de.denizugurlu.stacirest.routers.ProjectRouter;
+import de.denizugurlu.stacirest.routes.ProjectRouter;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
