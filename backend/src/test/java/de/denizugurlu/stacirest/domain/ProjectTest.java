@@ -4,13 +4,15 @@ import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProjectTest {
     @Test
     void shouldConstruct() {
-        Project project = new Project("1", "test-project");
+        Project project = new Project("1", "test-project", "test-customer", Collections.emptyList());
 
         // JUnit
         assertEquals("1", project.getId());
