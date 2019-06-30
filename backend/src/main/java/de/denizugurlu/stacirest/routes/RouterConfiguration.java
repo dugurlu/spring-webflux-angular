@@ -8,8 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
@@ -22,7 +21,8 @@ public class RouterConfiguration {
     RouterFunction<ServerResponse> projectRoutes(ProjectHandler projectHandler) {
         return route(GET(API_BASE_URL + "projects"), projectHandler::projects)
                 .andRoute(GET(API_BASE_URL + "projects/{id}"), projectHandler::project)
-                .andRoute(POST(API_BASE_URL + "projects"), projectHandler::create);
+                .andRoute(POST(API_BASE_URL + "projects"), projectHandler::create)
+                .andRoute(PUT(API_BASE_URL + "projects/{id}"), projectHandler::update);
     }
 
     @Bean

@@ -12,10 +12,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static de.denizugurlu.stacirest.routes.RouterConfiguration.API_BASE_URL;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -79,5 +81,23 @@ class ProjectRouterTest {
                 .expectStatus().isCreated()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBody().jsonPath("$.id").isNotEmpty();
+    }
+
+    @Test
+    void updateProject() {
+        when(projectRepository.findById(anyString()))
+                .thenReturn(Mono.just(Project.builder().id("1").name("test-project").build()));
+
+        when(projectRepository.save(any(Project.class)))
+                .thenReturn(Mono.just(Project.builder().id("1").name("test-project-updated").build()));
+
+        client.put()
+                .uri(API_BASE_URL + "projects/1")
+                .body(BodyInserters.fromPublisher(Mono.just(Project.builder().id("1").name("foobar").build()), Project.class))
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody().jsonPath("$.name").isEqualTo("test-project-updated");
+
     }
 }

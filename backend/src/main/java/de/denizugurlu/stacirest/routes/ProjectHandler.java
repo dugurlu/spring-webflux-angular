@@ -22,21 +22,35 @@ public class ProjectHandler {
         this.projectRepository = projectRepository;
     }
 
-    Mono<ServerResponse> projects(ServerRequest req) {
+    Mono<ServerResponse> projects(ServerRequest request) {
         return ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(projectRepository.findAll(), Project.class);
     }
 
-    Mono<ServerResponse> project(ServerRequest req) {
-        String id = req.pathVariable("id");
+    Mono<ServerResponse> project(ServerRequest request) {
+        String id = request.pathVariable("id");
         return ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(projectRepository.findById(id), Project.class);
     }
 
-    Mono<ServerResponse> create(ServerRequest req) {
-        Mono<Project> project = req.bodyToMono(Project.class);
+    Mono<ServerResponse> create(ServerRequest request) {
+        Mono<Project> project = request.bodyToMono(Project.class);
         return projectRepository.insert(project).next()
                 .flatMap(p ->
                         created(UriComponentsBuilder.fromPath("/projects/{id}").buildAndExpand(p.getId()).toUri())
                                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                                 .body(fromObject(p)));
+    }
+
+    Mono<ServerResponse> update(ServerRequest request) {
+        String id = request.pathVariable("id");
+        Mono<Project> project = request.bodyToMono(Project.class);
+        return Mono.zip(projectRepository.findById(id), project).map(t -> {
+            Project projectToSave = t.getT1();
+            projectToSave.setName(t.getT2().getName());
+            projectToSave.setCustomer(t.getT2().getCustomer());
+            projectToSave.setRatings(t.getT2().getRatings());
+            return projectRepository.save(projectToSave);
+        }).flatMap(p ->
+                ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(p, Project.class));
+
     }
 }

@@ -7,7 +7,7 @@ Contract.make {
 
     request {
         method GET()
-        url '/api/v2/projects'
+        url '/api/v1/projects'
     }
     response {
         status OK()
