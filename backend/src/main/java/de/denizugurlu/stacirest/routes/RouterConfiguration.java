@@ -9,16 +9,20 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Configuration
-public class ProjectRouter {
+public class RouterConfiguration {
+
+    static final String API_BASE_URL = "/api/v1/";
 
     @Bean
-    RouterFunction<ServerResponse> routes(ProjectHandler projectHandler) {
-        return route(GET("/api/v2/projects"), projectHandler::projects)
-                .andRoute(GET("/api/v2/projects/{id}"), projectHandler::project);
+    RouterFunction<ServerResponse> projectRoutes(ProjectHandler projectHandler) {
+        return route(GET(API_BASE_URL + "projects"), projectHandler::projects)
+                .andRoute(GET(API_BASE_URL + "projects/{id}"), projectHandler::project)
+                .andRoute(POST(API_BASE_URL + "projects"), projectHandler::create);
     }
 
     @Bean

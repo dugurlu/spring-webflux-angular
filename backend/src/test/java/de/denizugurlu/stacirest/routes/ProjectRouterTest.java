@@ -4,6 +4,7 @@ import de.denizugurlu.stacirest.domain.Project;
 import de.denizugurlu.stacirest.repositories.ProjectRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,12 +15,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static de.denizugurlu.stacirest.routes.RouterConfiguration.API_BASE_URL;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest
-@Import({ProjectRouter.class, ProjectHandler.class})
+@Import({RouterConfiguration.class, ProjectHandler.class})
 class ProjectRouterTest {
 
     @Autowired
@@ -29,12 +32,23 @@ class ProjectRouterTest {
     ProjectRepository projectRepository;
 
     @Test
+    void index() {
+        client.get()
+                .uri("/")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.TEXT_HTML);
+
+        verifyZeroInteractions(projectRepository);
+    }
+
+    @Test
     void getAllProjects() {
         when(projectRepository.findAll())
                 .thenReturn(Flux.just(Project.builder().id("1").name("test-project").build()));
 
         client.get()
-                .uri("/api/v2/projects")
+                .uri(API_BASE_URL + "projects")
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -47,7 +61,7 @@ class ProjectRouterTest {
                 .thenReturn(Mono.just(Project.builder().id("1").name("test-project").build()));
 
         client.get()
-                .uri("/api/v2/projects/1")
+                .uri(API_BASE_URL + "projects/1")
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -55,11 +69,15 @@ class ProjectRouterTest {
     }
 
     @Test
-    void index() {
-        client.get()
-                .uri("/")
+    void createProject() {
+        when(projectRepository.insert(ArgumentMatchers.<Mono<Project>>any()))
+                .thenReturn(Flux.just(Project.builder().id("1").name("test-project").customer("test-customer").build()));
+
+        client.post()
+                .uri(API_BASE_URL + "projects")
                 .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.TEXT_HTML);
+                .expectStatus().isCreated()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody().jsonPath("$.id").isNotEmpty();
     }
 }
