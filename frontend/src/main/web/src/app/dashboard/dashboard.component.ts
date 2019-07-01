@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {Project} from "../model/project.model";
+import {ProjectService} from "../service/project.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -7,10 +9,23 @@ import {Component, OnInit} from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() {
+  projects: Project[];
+  selectedProject: Project;
+  title = 'web';
+
+  constructor(private service: ProjectService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.service.getProjects().subscribe(projects => {
+      console.log(projects);
+      this.projects = projects;
+    })
+  }
+
+  selectProject(id: string): void {
+    this.selectedProject = this.projects.find(project => project.id === id);
+    console.log('selected project', this.selectedProject);
   }
 
 }

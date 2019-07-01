@@ -1,3 +1,15 @@
-<p>
-  dashboard works!
-</p>
+<h1>Projects Dashboard</h1>
+<ul>
+  <li *ngFor="let project of projects" (click)="selectProject(project.id)">
+    {{project.name}}
+  </li>
+</ul>
+<div *ngIf="selectedProject">
+  <h2>Selected Project:</h2>
+  <p>{{selectedProject.name}}</p>
+  <p>Customer: {{selectedProject.customer}}</p>
+  <h3>Ratings:</h3>
+  <ul>
+    <li *ngFor="let rating of selectedProject.ratings">{{rating.domain}} - {{rating.rule}} ({{rating.fulfillment}}%)</li>
+  </ul>
+</div>

@@ -1,12 +1,5 @@
 <nav>
   <a routerLink="/dashboard">Dashboard</a>
 </nav>
-<h1>Projects</h1>
-<ul>
-  <li *ngFor="let project of projects" (click)="selectProject(project.id)">
-    {{project.name}}
-  </li>
-</ul>
-
 <router-outlet></router-outlet>
 
