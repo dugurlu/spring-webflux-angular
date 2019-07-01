@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-@Profile("dev")
+@Profile("bootstrap-data")
 @Component
 public class Bootstrap implements ApplicationRunner {
 

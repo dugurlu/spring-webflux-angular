@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 
@@ -19,7 +18,6 @@ import reactor.core.publisher.Flux;
     properties = "server.port=0")
 @ExtendWith(SpringExtension.class)
 @Import(ProjectRouter.class)
-@ActiveProfiles("test")
 public class BaseClass {
 
     @LocalServerPort
