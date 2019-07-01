@@ -2,7 +2,7 @@ package de.denizugurlu.stacirest;
 
 import de.denizugurlu.stacirest.domain.Project;
 import de.denizugurlu.stacirest.repositories.ProjectRepository;
-import de.denizugurlu.stacirest.routers.ProjectRouter;
+import de.denizugurlu.stacirest.routes.RouterConfiguration;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import reactor.core.publisher.Flux;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = "server.port=0")
 @ExtendWith(SpringExtension.class)
-@Import(ProjectRouter.class)
+@Import(RouterConfiguration.class)
 public class BaseClass {
 
     @LocalServerPort

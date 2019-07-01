@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document
 @NoArgsConstructor
@@ -23,4 +25,12 @@ public class Project {
     @NotBlank
     @Size(min = 3)
     private String name;
+
+    private String customer;
+
+    private List<Rating> ratings = new ArrayList<>();
+
+    public void addRating(Rating rating) {
+        this.ratings.add(rating);
+    }
 }
