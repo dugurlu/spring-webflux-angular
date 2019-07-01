@@ -1,6 +1,7 @@
-package de.denizugurlu.stacirest.routes;
+package de.denizugurlu.stacirest.config;
 
 import de.denizugurlu.stacirest.domain.Project;
+import de.denizugurlu.stacirest.handler.ProjectHandler;
 import de.denizugurlu.stacirest.repositories.ProjectRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static de.denizugurlu.stacirest.routes.RouterConfiguration.API_BASE_URL;
+import static de.denizugurlu.stacirest.config.RouterConfiguration.API_BASE_URL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @WebFluxTest
 @Import({RouterConfiguration.class, ProjectHandler.class})
-class ProjectRouterTest {
+class RouterConfigurationTest {
 
     @Autowired
     WebTestClient client;
@@ -99,5 +100,17 @@ class ProjectRouterTest {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBody().jsonPath("$.name").isEqualTo("test-project-updated");
 
+    }
+
+    @Test
+    void deleteProject() {
+        when(projectRepository.deleteById(anyString()))
+                .thenReturn(Mono.empty());
+
+        client.delete()
+                .uri(API_BASE_URL + "projects/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().isEmpty();
     }
 }

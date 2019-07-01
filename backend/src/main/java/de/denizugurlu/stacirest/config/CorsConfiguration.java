@@ -1,4 +1,4 @@
-package de.denizugurlu.stacirest.routes;
+package de.denizugurlu.stacirest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

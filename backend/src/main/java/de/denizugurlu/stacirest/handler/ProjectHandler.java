@@ -1,4 +1,4 @@
-package de.denizugurlu.stacirest.routes;
+package de.denizugurlu.stacirest.handler;
 
 import de.denizugurlu.stacirest.domain.Project;
 import de.denizugurlu.stacirest.repositories.ProjectRepository;
@@ -22,16 +22,16 @@ public class ProjectHandler {
         this.projectRepository = projectRepository;
     }
 
-    Mono<ServerResponse> projects(ServerRequest request) {
+    public Mono<ServerResponse> projects(ServerRequest request) {
         return ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(projectRepository.findAll(), Project.class);
     }
 
-    Mono<ServerResponse> project(ServerRequest request) {
+    public Mono<ServerResponse> project(ServerRequest request) {
         String id = request.pathVariable("id");
         return ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(projectRepository.findById(id), Project.class);
     }
 
-    Mono<ServerResponse> create(ServerRequest request) {
+    public Mono<ServerResponse> create(ServerRequest request) {
         Mono<Project> project = request.bodyToMono(Project.class);
         return projectRepository.insert(project).next()
                 .flatMap(p ->
@@ -40,7 +40,7 @@ public class ProjectHandler {
                                 .body(fromObject(p)));
     }
 
-    Mono<ServerResponse> update(ServerRequest request) {
+    public Mono<ServerResponse> update(ServerRequest request) {
         String id = request.pathVariable("id");
         Mono<Project> project = request.bodyToMono(Project.class);
         return Mono.zip(projectRepository.findById(id), project).map(t -> {
@@ -52,5 +52,9 @@ public class ProjectHandler {
         }).flatMap(p ->
                 ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(p, Project.class));
 
+    }
+
+    public Mono<ServerResponse> delete(ServerRequest request) {
+        return projectRepository.deleteById(request.pathVariable("id")).flatMap( p -> ok().build());
     }
 }

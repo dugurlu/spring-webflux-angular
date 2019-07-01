@@ -1,5 +1,6 @@
-package de.denizugurlu.stacirest.routes;
+package de.denizugurlu.stacirest.config;
 
+import de.denizugurlu.stacirest.handler.ProjectHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,8 @@ public class RouterConfiguration {
         return route(GET(API_BASE_URL + "projects"), projectHandler::projects)
                 .andRoute(GET(API_BASE_URL + "projects/{id}"), projectHandler::project)
                 .andRoute(POST(API_BASE_URL + "projects"), projectHandler::create)
-                .andRoute(PUT(API_BASE_URL + "projects/{id}"), projectHandler::update);
+                .andRoute(PUT(API_BASE_URL + "projects/{id}"), projectHandler::update)
+                .andRoute(DELETE(API_BASE_URL + "projects/{id}"), projectHandler::delete);
     }
 
     @Bean
