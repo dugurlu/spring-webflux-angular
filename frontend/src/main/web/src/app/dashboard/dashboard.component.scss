@@ -1,0 +1,20 @@
+.mat-card-padded {
+  margin: 0 0 2rem 2rem;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.projects-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.selected-project {
+  flex-grow: 1;
+  margin-left: 20px;
+}

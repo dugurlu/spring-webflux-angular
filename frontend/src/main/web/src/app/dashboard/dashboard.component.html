@@ -1,15 +1,32 @@
 <h1>Projects Dashboard</h1>
-<ul>
-  <li *ngFor="let project of projects" (click)="selectProject(project.id)">
-    {{project.name}}
-  </li>
-</ul>
-<div *ngIf="selectedProject">
-  <h2>Selected Project:</h2>
-  <p>{{selectedProject.name}}</p>
-  <p>Customer: {{selectedProject.customer}}</p>
-  <h3>Ratings:</h3>
-  <ul>
-    <li *ngFor="let rating of selectedProject.ratings">{{rating.domain}} - {{rating.rule}} ({{rating.fulfillment}}%)</li>
-  </ul>
+<div class="flex-container">
+  <div class="projects-container">
+    <mat-card class="mat-card-padded" *ngFor="let project of projects" (click)="selectProject(project.id)">
+      {{project.name}}
+    </mat-card>
+  </div>
+  <div class="selected-project">
+    <mat-card *ngIf="selectedProject">
+      <mat-card-header>
+        <mat-card-title>Selected Project</mat-card-title>
+        <mat-card-subtitle>{{selectedProject.name}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Customer: {{selectedProject.customer}}</p>
+        <div *ngIf="selectedProject.ratings?.length > 0">
+          <h3>Ratings:</h3>
+          <ul>
+            <li *ngFor="let rating of selectedProject.ratings">{{rating.domain}} - {{rating.rule}}
+              ({{rating.fulfillment}}
+              %)
+            </li>
+          </ul>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">Edit</button>
+        <button mat-button color="warn">Delete</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

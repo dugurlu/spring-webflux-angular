@@ -6,6 +6,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from './app-routing.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {APP_BASE_HREF} from "@angular/common";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+import {MatButtonModule, MatCardModule} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import {APP_BASE_HREF} from "@angular/common";
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/'}],
   bootstrap: [AppComponent]

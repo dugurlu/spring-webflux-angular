@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheusJN'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'springJN1'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    basic_auth:
+      username: user
+      password: user
+    static_configs:
+      - targets: ['staci-rest-backend:8080']
+#  - job_name: 'springJN2'
+#    scrape_interval: 5s
+#    metrics_path: '/actuator/prometheus'
+#    static_configs:
+#      - targets: ['localhost:8091']

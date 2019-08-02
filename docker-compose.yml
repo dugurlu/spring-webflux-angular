@@ -1,6 +1,18 @@
-version: '3'
+version: '3.7'
 services:
+  staci-app:
+    image: dugurlu/staci-rest-backend:latest
+    container_name: staci-rest-backend
+    ports:
+      - 8080:8080
+
   staci-mongo:
     image: mongo:latest
+    container_name: staci-mongo
     ports:
       - 27017:27017
+
+  prometheus:
+    image: my-prometheus:latest
+    ports:
+      - 9090:9090

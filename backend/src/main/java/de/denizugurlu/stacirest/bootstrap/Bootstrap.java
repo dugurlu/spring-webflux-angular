@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.Collections;
 
-@Profile("bootstrap-data")
+@Profile({"bootstrap-data"})
 @Component
 public class Bootstrap implements ApplicationRunner {
 

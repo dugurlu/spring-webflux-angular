@@ -11,7 +11,7 @@ export class DashboardComponent implements OnInit {
 
   projects: Project[];
   selectedProject: Project;
-  title = 'web';
+  title = 'tbd';
 
   constructor(private service: ProjectService) {
   }
