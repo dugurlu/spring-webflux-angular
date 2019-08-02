@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   staci-app:
     image: dugurlu/staci-rest-backend:latest
